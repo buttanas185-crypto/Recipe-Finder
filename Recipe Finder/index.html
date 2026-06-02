@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Finder App</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  
+  <body>
+    <div class="container">
+        <h2>Recipe Finder</h2>
+        <p>Find delicious recipes instantly</p>
+        
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Enter a meal or ingredient (e.g., Chicken)...">
+            <button id="search-btn">Search</button>
+        </div>
+
+        <div class="output">
+            <div class="info">
+                <img class="recipe-img" src="" alt="Recipe Image">
+                <div class="details">
+                    <h3 class="recipe-name"></h3>
+                    <p><strong>Category:</strong> <span class="recipe-category"></span></p>
+                    <p><strong>Area/Origin:</strong> <span class="recipe-area"></span></p>
+                    <div class="instructions-wrapper">
+                        <p><strong>Instructions:</strong></p>
+                        <p class="recipe-instructions"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   <script src="script.js"></script>
+  </body>
+</html>
