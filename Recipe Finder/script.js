@@ -1,12 +1,6 @@
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
-const info = document.querySelector('.info');
-
-const recipeName = document.querySelector('.recipe-name');
-const recipeCategory = document.querySelector('.recipe-category');
-const recipeArea = document.querySelector('.recipe-area');
-const recipeInstructions = document.querySelector('.recipe-instructions');
-const recipeImg = document.querySelector('.recipe-img');
+const recipesContainer = document.getElementById('recipes-container');
 
 const apiCalls = async (url) => {
     try {
@@ -16,6 +10,21 @@ const apiCalls = async (url) => {
     } catch (error) {
         console.error("API Call Failed:", error);
     }
+}
+
+// Helper function to extract all ingredients and measurements into a list
+const getIngredientsList = (meal) => {
+    let ingredientsHtml = "";
+    for (let i = 1; i <= 20; i++) {
+        const ingredient = meal[`strIngredient${i}`];
+        const measure = meal[`strMeasure${i}`];
+
+        // If the ingredient exists and isn't empty, add it to our list
+        if (ingredient && ingredient.trim() !== "") {
+            ingredientsHtml += `<li>${measure ? measure.trim() : ""} ${ingredient.trim()}</li>`;
+        }
+    }
+    return ingredientsHtml;
 }
 
 const getRecipeData = async () => {
@@ -29,21 +38,47 @@ const getRecipeData = async () => {
     const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchTerm)}`;
     let data = await apiCalls(url);
 
+    // Clear previous search results
+    recipesContainer.innerHTML = "";
+
     if (data && data.meals) {
-        console.log('Total Recipes: ' +  data.meals.length)
-        console.log(JSON.stringify(data.meals))
-        const meal = data.meals[0]; // Select the first result
-        
-        recipeName.innerText = meal.strMeal;
-        recipeImg.src = meal.strMealThumb;
-        recipeCategory.innerText = meal.strCategory || "N/A";
-        recipeArea.innerText = meal.strArea || "N/A";
-        recipeInstructions.innerText = meal.strInstructions;
-        
-        info.style.display = "block";
+        // Take up to the first 5 recipes
+        const limitedMeals = data.meals.slice(0, 5);
+
+        limitedMeals.forEach(meal => {
+            // Generate the list of ingredients for this specific meal
+            const ingredientsList = getIngredientsList(meal);
+
+            // Create a recipe card element
+            const recipeCard = document.createElement('div');
+            recipeCard.classList.add('recipe-card');
+
+            recipeCard.innerHTML = `
+                <img class="recipe-img" src="${meal.strMealThumb}" alt="${meal.strMeal}">
+                <div class="details">
+                    <h3 class="recipe-name">${meal.strMeal}</h3>
+                    <p><strong>Category:</strong> <span>${meal.strCategory || "N/A"}</span></p>
+                    <p><strong>Area/Origin:</strong> <span>${meal.strArea || "N/A"}</span></p>
+                    
+                    <div class="ingredients-wrapper">
+                        <p><strong>Ingredients:</strong></p>
+                        <ul class="recipe-ingredients-list">
+                            ${ingredientsList}
+                        </ul>
+                    </div>
+
+                    <div class="instructions-wrapper">
+                        <p><strong>Instructions:</strong></p>
+                        <p class="recipe-instructions">${meal.strInstructions}</p>
+                    </div>
+                </div>
+                <hr class="recipe-divider">
+            `;
+
+            recipesContainer.appendChild(recipeCard);
+        });
     } else {
         alert("No recipes found! Try searching for something else (e.g., 'cake', 'beef').");
-        info.style.display = "none";
     }
 }
 
