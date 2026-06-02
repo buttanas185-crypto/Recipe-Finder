@@ -13,6 +13,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center; 
+    padding: 2rem 0;
 }
 
 .container{
@@ -24,6 +25,9 @@ body{
     max-width: 550px;
     border-radius: 15px; 
     filter: drop-shadow(0px 10px 20px rgba(0, 0, 0, 0.25));
+    /* Added a max height and scroll to the main container so 5 recipes stay readable */
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .container *{
@@ -69,6 +73,12 @@ body{
     background-color: #d35400;
 }
 
+/* Individual Card Styling */
+.recipe-card {
+    text-align: left;
+    margin-top: 1.5rem;
+}
+
 .recipe-img{
      width: 12rem;
      height: 12rem;
@@ -77,10 +87,6 @@ body{
      margin: 1rem auto;
      border-radius: 10px;
      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.details {
-    text-align: left;
 }
 
 .details h3 {
@@ -95,15 +101,25 @@ body{
     font-size: 0.95rem;
 }
 
-.instructions-wrapper {
+.ingredients-wrapper, .instructions-wrapper {
     margin-top: 1rem;
     background: #f9f9f9;
     padding: 1rem;
     border-radius: 8px;
 }
 
+.recipe-ingredients-list {
+    padding-left: 1.2rem;
+    font-size: 0.9rem;
+    color: #34495e;
+}
+
+.recipe-ingredients-list li {
+    margin: 0.2rem 0;
+}
+
 .recipe-instructions {
-    max-height: 180px;
+    max-height: 150px;
     overflow-y: auto;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -111,6 +127,14 @@ body{
     white-space: pre-line;
 }
 
-.info {
-    display: none; 
+.recipe-divider {
+    border: 0;
+    height: 1px;
+    background: #e0e0e0;
+    margin: 2rem 0 1rem 0;
+}
+
+/* Remove the divider from the very last recipe */
+.recipe-card:last-child .recipe-divider {
+    display: none;
 }
